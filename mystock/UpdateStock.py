@@ -61,22 +61,21 @@ class UpdateStock():
     def get_data(html_text):
         # final = []
         bs = BeautifulSoup(html_text, "html.parser")  # 创建BeautifulSoup对象
-        contents = bs.find('dl','class="company_details"') # 获取body部分
+        body = bs.contents[42].contents[5].contents[3]
+        contents = body.find_all('dd') # 获取body部分
+        dd = body.contents[1].string.replace(' <dt>公司名称：</dt>\r\n\t\t\t\t<dd>淳中科技</dd> ','')
         # page = data.find('page')  # 获取ul部分
         # li = ul.find_all('li')  # 获取所有的li
         dict ={}
-        for content in contents: # 对每个li标签中的内容进行遍历
-
-            if content.string != '\n':
-                code = content.contents[3].contents[0].contents[0] # 找到股票代码
-                name = content.contents[5].contents[0].contents[0] # 找到股票名称
-                dict[code] = name  # 添加到temp中
-                # final.append(dict)   #将temp加到final中
+        dict['ssrq'] = contents[4].contents[0]
+        dict['totalNUm'] = contents[13].contents[0]
+        dict['floatNum'] = contents[14].contents[0]
+        dict['companyName'] = dd.contents[0]
 
         return dict
 
 def play():
-    db = pymysql.connect(host='192.168.203.128', port=3306, user='root', password='keke2012', db='mystockdb',charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    db = pymysql.connect(host='123.206.87.88', port=3306, user='root', password='keke2012', db='mystockdb',charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     # 使用cursor()方法获取操作游标
     cursor = db.cursor()
     sql = 'select stockcode from  market_stock'
