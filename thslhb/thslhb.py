@@ -9,6 +9,8 @@ import http.client
 import json
 import datetime
 import pymongo
+from xingu import XinGu
+from xingu import xinguInfo
 
 sched = BlockingScheduler()
 
@@ -17,7 +19,7 @@ sched = BlockingScheduler()
 # def timed_job():
 #     print('This job is run every three minutes.')
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour='18', minute='21')
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour='17', minute='30',misfire_grace_time=1000)
 def scheduled_job():
     today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     startJob(today)
@@ -165,10 +167,21 @@ def saveMongoDB(mongodata):
     collection = db.thslhb
     collection.insert_one(mongodata)
 
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour='15', minute='30',misfire_grace_time=1000)
+def scheduled_job1():
+    today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    print(today,"获取新股信息")
+    XinGu.XinGu.play(XinGu.XinGu)
+
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour='09', minute='00',misfire_grace_time=1000)
+def scheduled_job2():
+    today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    print(today ,"更新新股信息")
+    xinguInfo.xinguInfo.queryDB(xinguInfo.xinguInfo)
 
 if __name__ == '__main__':
     print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     sched.start()
     # today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     # startJob(today)
-    print("let us figure out the thslhb situation")
+    # print("let us figure out the thslhb situation")

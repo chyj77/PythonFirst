@@ -2,3 +2,5 @@ APScheduler
 BeautifulSoup4
 pymongo
 requests
+lxml
+pymysql

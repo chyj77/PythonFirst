@@ -148,9 +148,9 @@ def saveToDB(dict):
         values = values.rstrip(",")
         execSql = sql + values
         # 执行sql语句
-        cursor.execute(execSql)
+        # cursor.execute(execSql)
         # 执行sql语句
-        db.commit()
+        # db.commit()
     except Exception:
         # 发生错误时回滚
         print(Exception)
