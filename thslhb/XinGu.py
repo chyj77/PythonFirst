@@ -87,7 +87,7 @@ class XinGu:
                 index = index+1
 
 
-    def play(self):
+    def play(self) -> object:
         # db = pymysql.connect(host='123.206.87.88', port=3306, user='root', password='keke2012', db='mystockdb',charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
         # # 使用cursor()方法获取操作游标
         # cursor = db.cursor()

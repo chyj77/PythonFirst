@@ -6,11 +6,9 @@ import socket
 import random
 import requests
 import http.client
-import json
-import datetime
 import pymongo
-from xingu import XinGu
-from xingu import xinguInfo
+from XinGu import XinGu
+from xinguInfo import xinguInfo
 
 sched = BlockingScheduler()
 
@@ -171,13 +169,13 @@ def saveMongoDB(mongodata):
 def scheduled_job1():
     today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print(today,"获取新股信息")
-    XinGu.XinGu.play(XinGu.XinGu)
+    XinGu.play(XinGu)
 
 @sched.scheduled_job('cron', day_of_week='mon-fri', hour='09', minute='00',misfire_grace_time=1000)
 def scheduled_job2():
     today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print(today ,"更新新股信息")
-    xinguInfo.xinguInfo.queryDB(xinguInfo.xinguInfo)
+    xinguInfo.queryDB(xinguInfo)
 
 if __name__ == '__main__':
     print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
