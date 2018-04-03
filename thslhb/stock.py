@@ -171,7 +171,7 @@ def scheduled_job1():
     print(today,"获取新股信息")
     XinGu.play(XinGu)
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour='09', minute='00',misfire_grace_time=1000)
+@sched.scheduled_job('cron', day_of_week='mon-fri', hour='16', minute='00',misfire_grace_time=1000)
 def scheduled_job2():
     today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print(today ,"更新新股信息")
