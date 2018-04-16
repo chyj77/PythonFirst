@@ -179,14 +179,14 @@ def scheduled_job2():
     xinguInfo.queryDB(xinguInfo)
 
 @sched.scheduled_job('cron', day_of_week='sun', hour='12', minute='00',misfire_grace_time=1000)
-def scheduled_job2():
+def scheduled_job3():
     today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print(today ,"更新股票概念")
     Thsgn.play(Thsgn)
 
 if __name__ == '__main__':
-    # print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
-    # sched.start()
-    today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-    startJob(today)
+    print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    sched.start()
+    # today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    # startJob(today)
     print("let us figure out the thslhb situation")
