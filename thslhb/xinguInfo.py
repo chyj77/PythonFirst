@@ -59,9 +59,9 @@ class xinguInfo:
                         print(updateSql)
                         cursor.execute(updateSql)
                         db.commit()
-        except Exception:
+        except Exception as e:
             # 发生错误时回滚
-            print(Exception)
+            print(e)
             db.rollback()
 
         # 关闭数据库连接
