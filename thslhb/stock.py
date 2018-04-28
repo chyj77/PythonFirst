@@ -1,6 +1,7 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from bs4 import BeautifulSoup
 import time
+import datetime
 import threading
 import socket
 import random
@@ -28,14 +29,14 @@ def startJob(today):
     print('This job is run every day at 5:30pm.', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     # today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print('today = ', today)
-    # today = "2018-03-02"
-    # begin_date = datetime.datetime.strptime('2015-01-07', "%Y-%m-%d")
-    # end_date = datetime.datetime.strptime(today,"%Y-%m-%d")
-    # while begin_date <= end_date:
-    #     date_str = begin_date.strftime("%Y-%m-%d")
-    #     begin_date += datetime.timedelta(days=1)
-    #     shurl = "http://data.10jqka.com.cn/ifmarket/lhbggxq/report/%s/" % (date_str)
-    #     get_data(getHtml(shurl),date_str)
+    today = "2018-04-19"
+    begin_date = datetime.datetime.strptime('2015-01-07', "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(today,"%Y-%m-%d")
+    while begin_date <= end_date:
+        date_str = begin_date.strftime("%Y-%m-%d")
+        begin_date += datetime.timedelta(days=1)
+        shurl = "http://data.10jqka.com.cn/ifmarket/lhbggxq/report/%s/" % (date_str)
+        get_data(getHtml(shurl),date_str)
     shurl = "http://data.10jqka.com.cn/ifmarket/lhbggxq/report/%s/" % (today)
     get_data(getHtml(shurl), today)
 
@@ -185,8 +186,8 @@ def scheduled_job3():
     Thsgn.play(Thsgn)
 
 if __name__ == '__main__':
-    print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
-    sched.start()
-    # today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-    # startJob(today)
+    # print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    # sched.start()
+    today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    startJob(today)
     print("let us figure out the thslhb situation")
