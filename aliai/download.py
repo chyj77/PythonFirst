@@ -65,7 +65,7 @@ def getFupan(htmlText):
     fupanRq = bs.find('a', title=re.compile(r'^涨停复盘*')).next_sibling.next_sibling
     rq = fupanRq.text.split(" ")[0]
     print("日期：", rq)
-    today = time.strftime('%m{m}%d{d}', time.localtime(time.time())).format( m='月', d='日')
+    today = time.strftime('%m-%d', time.localtime(time.time()))
     print(today)
     if(today == rq):
         for obj in fupanUrl:
@@ -107,21 +107,24 @@ def store(fupanText):
     array = []
     for tr in table:
         jsonStr = {}
-        td1 = tr.contents[0].text
-        td2 = tr.contents[1].text
-        if(td1 != None and td1 !=''and td2 != None and td2 !=''):
-            pattern = re.compile(r'\d+')
-            result1=pattern.findall(td1)
-            # print(result1)
-            jsonStr["stockcode"] = result1[0]
-            jsonStr["stockname"] = td2
-            jsonStr["nowprice"] = tr.contents[2].text
-            jsonStr["ztsj"] = tr.contents[3].text
-            jsonStr["ztmx"] = ''  # tr.contents[4].text
-            jsonStr["ztts"] = tr.contents[4].text
-            jsonStr["ztgn"] = tr.contents[5].text
-            # print(jsonStr)
-            array.append(jsonStr)
+        try:
+            td1 = tr.contents[0].text
+            td2 = tr.contents[1].text
+            if(td1 != None and td1 !=''and td2 != None and td2 !=''):
+                pattern = re.compile(r'\d+')
+                result1=pattern.findall(td1)
+                # print(result1)
+                jsonStr["stockcode"] = result1[0]
+                jsonStr["stockname"] = td2
+                jsonStr["nowprice"] = tr.contents[2].text
+                jsonStr["ztsj"] = tr.contents[3].text
+                jsonStr["ztmx"] = ''  # tr.contents[4].text
+                jsonStr["ztts"] = tr.contents[4].text
+                jsonStr["ztgn"] = tr.contents[5].text
+                # print(jsonStr)
+                array.append(jsonStr)
+        except Exception as e:
+            print(e)
     print(array)
     today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     # today ="2018-04-25"
@@ -136,7 +139,7 @@ def saveMongoDB(mongodata):
     collection.insert_one(mongodata)
 
 if __name__ == '__main__':
-    url = "http://stock.10jqka.com.cn/jiepan_list/"
+    url = "http://stock.10jqka.com.cn/fupan/"
     fupanUrl = getFupan(getHtml(url))
     if(fupanUrl != None):
         pngUrl = getPngUrl(getHtml(fupanUrl))
