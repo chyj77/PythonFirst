@@ -108,7 +108,7 @@ def get_shdata(html_text,today):
                 threading.Timer(60*30, startJob).start()
 
 def saveShMongoDB(mongodata):
-    client = pymongo.MongoClient(host='123.206.87.88', port=27017)
+    client = pymongo.MongoClient(host='*************', port=27017)
     db = client.mystock
     collection = db.shlhb
     collection.insert_one(mongodata)

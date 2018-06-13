@@ -8,7 +8,7 @@ import lxml.etree
 
 
 class Thsgn:
-    db = pymysql.connect(host='123.206.87.88', port=3306, user='root', password='keke2012', db='mystockdb',charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    db = pymysql.connect(host='*************', port=3306, user='root', password='********', db='mystockdb',charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     def get_content(url, data=None):
         header = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',

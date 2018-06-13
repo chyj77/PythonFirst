@@ -128,7 +128,7 @@ def get_data(html_text):
 
 def saveToDB(dict):
     # 打开数据库连接
-    db = pymysql.connect(host='123.206.87.88', port=3306, user='root', password='keke2012', db='mystockdb',charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+    db = pymysql.connect(host='*************', port=3306, user='root', password='********', db='mystockdb',charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     # 使用cursor()方法获取操作游标
     cursor = db.cursor()
     sql = 'INSERT INTO dict_stock(stockcode, stockname) VALUES '

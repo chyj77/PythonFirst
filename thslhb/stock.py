@@ -162,7 +162,7 @@ def get_data(html_text, today):
 
 def saveMongoDB(mongodata):
     # client = pymongo.MongoClient(host='172.21.0.17', port=27017)
-    client = pymongo.MongoClient(host='123.206.87.88', port=27017)
+    client = pymongo.MongoClient(host='*************', port=27017)
     db = client.mystock
     collection = db.thslhb
     collection.insert_one(mongodata)
