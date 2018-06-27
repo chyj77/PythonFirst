@@ -1,7 +1,6 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from bs4 import BeautifulSoup
 import time
-import datetime
 import threading
 import socket
 import random
@@ -11,6 +10,7 @@ import pymongo
 from XinGu import XinGu
 from xinguInfo import xinguInfo
 from thsgn import Thsgn
+import redis
 
 sched = BlockingScheduler()
 
@@ -29,14 +29,14 @@ def startJob(today):
     print('This job is run every day at 5:30pm.', time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     # today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print('today = ', today)
-    today = "2018-04-19"
-    begin_date = datetime.datetime.strptime('2015-01-07', "%Y-%m-%d")
-    end_date = datetime.datetime.strptime(today,"%Y-%m-%d")
-    while begin_date <= end_date:
-        date_str = begin_date.strftime("%Y-%m-%d")
-        begin_date += datetime.timedelta(days=1)
-        shurl = "http://data.10jqka.com.cn/ifmarket/lhbggxq/report/%s/" % (date_str)
-        get_data(getHtml(shurl),date_str)
+    # today = "2018-03-02"
+    # begin_date = datetime.datetime.strptime('2015-01-07', "%Y-%m-%d")
+    # end_date = datetime.datetime.strptime(today,"%Y-%m-%d")
+    # while begin_date <= end_date:
+    #     date_str = begin_date.strftime("%Y-%m-%d")
+    #     begin_date += datetime.timedelta(days=1)
+    #     shurl = "http://data.10jqka.com.cn/ifmarket/lhbggxq/report/%s/" % (date_str)
+    #     get_data(getHtml(shurl),date_str)
     shurl = "http://data.10jqka.com.cn/ifmarket/lhbggxq/report/%s/" % (today)
     get_data(getHtml(shurl), today)
 
@@ -147,7 +147,8 @@ def get_data(html_text, today):
                 lhbDataArray.append(lhbData)
                 i = i+1
         mongodata = {"rq":today,"data":lhbDataArray}
-        saveMongoDB(mongodata)
+        # saveMongoDB(mongodata)
+        saveRedis(mongodata)
         print(mongodata)
 
     else:
@@ -162,10 +163,16 @@ def get_data(html_text, today):
 
 def saveMongoDB(mongodata):
     # client = pymongo.MongoClient(host='172.21.0.17', port=27017)
-    client = pymongo.MongoClient(host='*************', port=27017)
+    client = pymongo.MongoClient(host='172.21.0.17', port=27017)
     db = client.mystock
     collection = db.thslhb
     collection.insert_one(mongodata)
+
+def saveRedis(mongodata):
+    pool = redis.ConnectionPool(host='***.***.***.***', port=6379, password='********', db=0)
+    r = redis.Redis(connection_pool=pool)
+    key = "lhb:" + mongodata['rq']
+    r.setnx(key,mongodata)
 
 @sched.scheduled_job('cron', day_of_week='mon-fri', hour='15', minute='30',misfire_grace_time=1000)
 def scheduled_job1():
@@ -186,8 +193,8 @@ def scheduled_job3():
     Thsgn.play(Thsgn)
 
 if __name__ == '__main__':
-    # print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
-    # sched.start()
-    today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-    startJob(today)
+    print('before the start thslhb funciton ---',time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    sched.start()
+    # today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    # startJob(today)
     print("let us figure out the thslhb situation")

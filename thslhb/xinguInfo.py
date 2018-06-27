@@ -11,7 +11,7 @@ import json
 class xinguInfo:
 
     def queryDB(self):
-        db = pymysql.connect(host='*************', port=3306, user='root', password='********', db='mystockdb',
+        db = pymysql.connect(host='***.***.***.***', port=3306, user='root', password='********', db='mystockdb',
                              charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()
