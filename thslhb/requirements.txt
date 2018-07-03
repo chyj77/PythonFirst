@@ -4,3 +4,4 @@ pymongo
 requests
 lxml
 pymysql
+redis

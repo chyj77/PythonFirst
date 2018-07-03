@@ -2,7 +2,6 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from bs4 import BeautifulSoup
 import time
-import threading
 import socket
 import random
 import requests
@@ -11,6 +10,7 @@ import re
 import os
 import aliai
 import pymongo
+import redis
 
 def getHtml(url):
     header = {
@@ -128,15 +128,22 @@ def store(fupanText):
     print(array)
     today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     # today ="2018-04-25"
-    mongodata = {"rq":today,"data":array}
-    saveMongoDB(mongodata)
+    mongodata = {"rq": today, "data": array}
+    # saveMongoDB(mongodata)
+    saveRedis(mongodata)
 
 def saveMongoDB(mongodata):
     # client = pymongo.MongoClient(host='172.21.0.17', port=27017)
-    client = pymongo.MongoClient(host='*************', port=27017)
+    client = pymongo.MongoClient(host='123.206.87.88', port=27017)
     db = client.mystock
     collection = db.fupan
     collection.insert_one(mongodata)
+
+def saveRedis(mongodata):
+    pool = redis.ConnectionPool(host='123.206.87.88', port=6379, password='keke2012', db=0)
+    r = redis.Redis(connection_pool=pool)
+    key = "fupan:" + mongodata['rq']
+    r.setnx(key,mongodata)
 
 if __name__ == '__main__':
     url = "http://stock.10jqka.com.cn/fupan/"

@@ -1,6 +1,7 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from bs4 import BeautifulSoup
 import time
+import datetime
 import threading
 import socket
 import random
@@ -30,7 +31,7 @@ def startJob(today):
     # today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     print('today = ', today)
     # today = "2018-03-02"
-    # begin_date = datetime.datetime.strptime('2015-01-07', "%Y-%m-%d")
+    # begin_date = datetime.datetime.strptime('2018-07-02', "%Y-%m-%d")
     # end_date = datetime.datetime.strptime(today,"%Y-%m-%d")
     # while begin_date <= end_date:
     #     date_str = begin_date.strftime("%Y-%m-%d")
@@ -169,7 +170,7 @@ def saveMongoDB(mongodata):
     collection.insert_one(mongodata)
 
 def saveRedis(mongodata):
-    pool = redis.ConnectionPool(host='***.***.***.***', port=6379, password='********', db=0)
+    pool = redis.ConnectionPool(host='172.17.0.7', port=6379, password='keke2012', db=0)
     r = redis.Redis(connection_pool=pool)
     key = "lhb:" + mongodata['rq']
     r.setnx(key,mongodata)
